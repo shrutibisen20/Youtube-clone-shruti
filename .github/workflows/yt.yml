@@ -34,16 +34,16 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/youtube-clone:latest
 
-            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/youtube-clone:latest
+            sudo docker stop youtube-clone || true
 
-            docker stop youtube-clone || true
+            sudo docker rm youtube-clone || true
 
-            docker rm youtube-clone || true
-
-            docker run -d \
+            sudo docker run -d \
               --name youtube-clone \
               -p 80:80 \
               ${{ secrets.DOCKER_HUB_USERNAME }}/youtube-clone:latest
 
-            docker image prune -f
+            sudo docker image prune -f
+          
